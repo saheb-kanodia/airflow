@@ -22,13 +22,14 @@ from cached_property import cached_property
 
 from airflow.configuration import conf
 from airflow.utils.log.logging_mixin import LoggingMixin
-from airflow.utils.log.file_task_handler import FileTaskHandler
+# from airflow.utils.log.file_task_handler import FileTaskHandler
+from airflow.utils.log.watched_file_task_handler import WatchedFileHandler
 
 
-class S3TaskHandler(FileTaskHandler, LoggingMixin):
+class S3TaskHandler(WatchedFileHandler, LoggingMixin):
     """
     S3TaskHandler is a python log handler that handles and reads
-    task instance logs. It extends airflow FileTaskHandler and
+    task instance logs. It extends airflow WatchedFileHandler and
     uploads to and reads from S3 remote storage.
     """
     def __init__(self, base_log_folder, s3_log_folder, filename_template):

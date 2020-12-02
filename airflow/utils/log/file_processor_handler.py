@@ -23,6 +23,7 @@ import os
 from airflow import settings
 from airflow.utils.helpers import parse_template_string
 from datetime import datetime
+from logging.handlers import WatchedFileHandler
 
 
 class FileProcessorHandler(logging.Handler):
@@ -63,7 +64,7 @@ class FileProcessorHandler(logging.Handler):
         :param filename: filename in which the dag is located
         """
         local_loc = self._init_file(filename)
-        self.handler = logging.FileHandler(local_loc)
+        self.handler = WatchedFileHandler(local_loc)
         self.handler.setFormatter(self.formatter)
         self.handler.setLevel(self.level)
 
