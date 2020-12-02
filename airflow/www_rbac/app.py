@@ -61,7 +61,6 @@ def create_app(config=None, session=None, testing=False, app_name="Airflow"):
             x_port=conf.getint("webserver", "PROXY_FIX_X_PORT", fallback=1),
             x_prefix=conf.getint("webserver", "PROXY_FIX_X_PREFIX", fallback=1)
         )
-    app.secret_key = conf.get('webserver', 'SECRET_KEY')
     app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=settings.get_session_lifetime_config())
 
     app.secret_key = conf.get('webserver', 'SECRET_KEY')

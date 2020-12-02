@@ -61,12 +61,11 @@ def create_app(config=None, testing=False):
             x_port=conf.getint("webserver", "PROXY_FIX_X_PORT", fallback=1),
             x_prefix=conf.getint("webserver", "PROXY_FIX_X_PREFIX", fallback=1)
         )
-    app.secret_key = conf.get('webserver', 'SECRET_KEY')
     app.config['PERMANENT_SESSION_LIFETIME'] = datetime.timedelta(minutes=settings.get_session_lifetime_config())
     app.config['LOGIN_DISABLED'] = not conf.getboolean(
         'webserver', 'AUTHENTICATE')
 
-    app.secret_key = configuration.conf.get('webserver', 'SECRET_KEY')
+    app.secret_key = conf.get('webserver', 'SECRET_KEY')
 
     app.config['SESSION_COOKIE_HTTPONLY'] = True
     app.config['SESSION_COOKIE_SECURE'] = conf.getboolean('webserver', 'COOKIE_SECURE')
