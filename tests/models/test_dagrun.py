@@ -654,6 +654,5 @@ class DagRunTest(unittest.TestCase):
         session.close()
         dag_run.update_state()
         true_delay = (ti.start_date - dag.following_schedule(dag_run.execution_date)).total_seconds()
-        stats_mock.assert_called()
         sched_delay_stat_call = call('dagrun.{}.first_task_scheduling_delay'.format(dag.dag_id), true_delay)
         self.assertIn(sched_delay_stat_call, stats_mock.mock_calls)
