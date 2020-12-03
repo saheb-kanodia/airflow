@@ -23,6 +23,8 @@ import os
 from airflow import settings
 from airflow.utils.helpers import parse_template_string
 from datetime import datetime
+from logging.handlers import TimedRotatingFileHandler
+from airflow.utils.log.rotating_file_task_handler import RotatingFileTaskHandler
 
 
 class FileProcessorHandler(logging.Handler):
@@ -32,7 +34,8 @@ class FileProcessorHandler(logging.Handler):
     to `logging.FileHandler` after receiving dag processor context.
     """
 
-    def __init__(self, base_log_folder, filename_template):
+    def __init__(self, base_log_folder, filename_template,
+                 interval=5, backup_count=24):
         """
         :param base_log_folder: Base log folder to place logs.
         :param filename_template: template filename string
@@ -41,6 +44,8 @@ class FileProcessorHandler(logging.Handler):
         self.handler = None
         self.base_log_folder = base_log_folder
         self.dag_dir = os.path.expanduser(settings.DAGS_FOLDER)
+        self.interval = interval
+        self.backup_count = backup_count
         self.filename_template, self.filename_jinja_template = \
             parse_template_string(filename_template)
 
@@ -63,7 +68,8 @@ class FileProcessorHandler(logging.Handler):
         :param filename: filename in which the dag is located
         """
         local_loc = self._init_file(filename)
-        self.handler = logging.FileHandler(local_loc)
+        self.handler = RotatingFileTaskHandler(self.base_log_folder, self.filename_template,
+                                               self.interval, self.backup_count)
         self.handler.setFormatter(self.formatter)
         self.handler.setLevel(self.level)
 

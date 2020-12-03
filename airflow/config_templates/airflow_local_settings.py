@@ -77,7 +77,7 @@ DEFAULT_LOGGING_CONFIG = {
             'stream': 'sys.stdout'
         },
         'task': {
-            'class': 'airflow.utils.log.file_task_handler.FileTaskHandler',
+            'class': 'airflow.utils.log.rotating_file_task_handler.RotatingFileTaskHandler',
             'formatter': 'airflow',
             'base_log_folder': os.path.expanduser(BASE_LOG_FOLDER),
             'filename_template': FILENAME_TEMPLATE,
